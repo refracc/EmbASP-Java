@@ -4,6 +4,7 @@ import it.unical.mat.embasp.languages.Mapper;
 import it.unical.mat.embasp.languages.asp.IllegalTermException;
 import it.unical.mat.embasp.languages.asp.SymbolicConstant;
 import it.unical.mat.parsers.datalog.DatalogParser;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 
@@ -50,7 +51,7 @@ public class DatalogMapper extends Mapper {
   }
 
   @Override
-  protected String getId(final String atom) {
+  protected String getId(final @NotNull String atom) {
     final int openBracketIndex = atom.indexOf("(");
     if (openBracketIndex == -1)
       return atom;
