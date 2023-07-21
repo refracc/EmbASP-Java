@@ -50,7 +50,6 @@ public abstract class Handler {
    * @param program is the {@link InputProgram} instance added to the collection.
    * @return the id associate to the new added {@link InputProgram} instance.
    */
-
   public int addProgram(final InputProgram program) {
     final int current_value = programs.size();
     programs.put(programs.size() + 1, program);

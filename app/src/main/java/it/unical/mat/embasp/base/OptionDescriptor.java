@@ -37,7 +37,7 @@ public class OptionDescriptor {
   }
 
   /**
-   * after using this method the {@link #options} variable will be empty
+   * After using this method the {@link #options} variable will be empty
    */
   public void clear() {
 
@@ -50,7 +50,6 @@ public class OptionDescriptor {
    * @return {@link #options}'s data in a String format
    */
   public String getOptions() {
-
     return options;
   }
 

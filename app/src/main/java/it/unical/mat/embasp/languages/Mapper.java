@@ -2,8 +2,9 @@ package it.unical.mat.embasp.languages;
 
 import it.unical.mat.embasp.languages.asp.IllegalTermException;
 import it.unical.mat.embasp.languages.asp.SymbolicConstant;
+import it.unical.mat.embasp.base.InputProgram;
+import org.jetbrains.annotations.NotNull;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -12,7 +13,7 @@ import java.util.Map;
 
 /**
  * Base class
- * Contains methods used to transform Objects into {@link it.unical.mat.embasp.base.InputProgram}
+ * Contains methods used to transform Objects into {@link InputProgram}
  */
 
 public abstract class Mapper {
@@ -30,7 +31,7 @@ public abstract class Mapper {
   /**
    * Returns an Object for the given string
    *
-   * @param string String from witch data are extrapolated
+   * @param atom String from witch data are extrapolated
    * @return Object for the given String data
    * @throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, IllegalTermException
    */
@@ -51,7 +52,7 @@ public abstract class Mapper {
     if (parameters == null)
       return null;
 
-    final Object object = cl.newInstance();
+    final Object object = cl.getDeclaredConstructor().newInstance();
 
     populateObject(cl, parameters, object);
 
@@ -75,7 +76,7 @@ public abstract class Mapper {
    * @return String data for the given Object in a String format
    * @throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, IllegalTermException, IllegalTermException
    */
-  public String getString(final Object obj) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+  public String getString(final @NotNull Object obj) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
       SecurityException, ObjectNotValidException, IllegalAnnotationException, IllegalTermException {
     final String predicate = registerClass(obj.getClass());
 
@@ -92,7 +93,7 @@ public abstract class Mapper {
     return getActualString(predicate, parametersMap);
   }
 
-  private void populateObject(final Class<?> cl, final String[] parameters, final Object obj) throws IllegalAccessException, InvocationTargetException {
+  private void populateObject(final @NotNull Class<?> cl, final String[] parameters, final Object obj) throws IllegalAccessException, InvocationTargetException {
     for (final Field field : cl.getDeclaredFields())
       if (field.isAnnotationPresent(Param.class)) {
 
@@ -116,14 +117,14 @@ public abstract class Mapper {
    *
    * @return String representing pairing key of {@link #predicateClass}
    */
-  public String registerClass(final Class<?> cl) throws ObjectNotValidException, IllegalAnnotationException {
+  public String registerClass(final @NotNull Class<?> cl) throws ObjectNotValidException, IllegalAnnotationException {
 
-    final Annotation annotation = cl.getAnnotation(Id.class);
+    final Id annotation = cl.getAnnotation(Id.class);
 
     if (annotation == null)
       throw new IllegalAnnotationException();
 
-    final String predicate = ((Id) annotation).value();
+    final String predicate = annotation.value();
 
     if (predicate.contains(" "))
       throw new ObjectNotValidException();
@@ -138,14 +139,14 @@ public abstract class Mapper {
     return predicate;
   }
 
-  public void unregisterClass(final Class<?> cl) throws IllegalAnnotationException {
+  public void unregisterClass(final @NotNull Class<?> cl) throws IllegalAnnotationException {
 
-    final Annotation annotation = cl.getAnnotation(Id.class);
+    final Id annotation = cl.getAnnotation(Id.class);
 
     if (annotation == null)
       throw new IllegalAnnotationException();
 
-    final String predicate = ((Id) annotation).value();
+    final String predicate = annotation.value();
 
     predicateClass.remove(predicate);
     classSetterMethod.remove(cl);

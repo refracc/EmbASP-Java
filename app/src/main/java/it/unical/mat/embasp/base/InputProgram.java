@@ -56,7 +56,7 @@ public class InputProgram {
   }
 
   /**
-   * @throws Exception
+   * @throws Exception Functionality is currently not implemented.
    */
   public void addObjectInput(final Object inputObj) throws Exception {
     throw new UnsupportedOperationException("functionality not implemented");
@@ -116,9 +116,9 @@ public class InputProgram {
   }
 
   /**
-   * sets {@link #programs } value to the new given one
+   * Sets {@link #programs} value to the new given one
    *
-   * @parm programs new value
+   * @param programs new value
    */
   public void setPrograms(final String programs) {
     this.programs = programs;
