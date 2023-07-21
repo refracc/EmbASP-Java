@@ -2,6 +2,7 @@ package it.unical.mat.embasp.languages.asp;
 
 import it.unical.mat.embasp.languages.Mapper;
 import it.unical.mat.parsers.asp.ASPParser;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 
@@ -23,31 +24,31 @@ public class ASPMapper extends Mapper {
   }
 
   @Override
-  protected String getActualString(final String predicate, final HashMap<Integer, Object> parametersMap) throws IllegalTermException {
+  protected String getActualString(final String predicate, final @NotNull HashMap<Integer, Object> parametersMap) throws IllegalTermException {
     if (parametersMap.isEmpty())
       return predicate;
 
-    String atom = predicate + "(";
+    StringBuilder atom = new StringBuilder(predicate + "(");
     for (int i = 0; i < parametersMap.size(); i++) {
       if (i != 0)
-        atom += ",";
+        atom.append(",");
       final Object objectTerm = parametersMap.get(i);
       if (objectTerm == null)
         throw new IllegalTermException("Wrong term number of predicate " + predicate);
       if (objectTerm instanceof Integer)
-        atom += String.valueOf(objectTerm);
+        atom.append(objectTerm);
       else if (objectTerm instanceof SymbolicConstant)
-        atom += objectTerm.toString();
+        atom.append(objectTerm);
       else
-        atom += "\"" + objectTerm + "\"";
+        atom.append("\"").append(objectTerm).append("\"");
     }
-    atom += ")";
-    return atom;
+    atom.append(")");
+    return atom.toString();
 
   }
 
   @Override
-  protected String getId(final String atom) {
+  protected String getId(final @NotNull String atom) {
     final int openBracketIndex = atom.indexOf("(");
 
     if (openBracketIndex == -1)
