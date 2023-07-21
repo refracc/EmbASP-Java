@@ -35,12 +35,12 @@ dependencies {
 }
 
 jar {
-
+	archiveFileName = 'emb-asp.jar'
 	archiveVersion =  '7.5.0'
 	
-	from {
-		configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
-	}
+//	from {
+//		configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+//	}
 
 	exclude 'resources/'
 }
