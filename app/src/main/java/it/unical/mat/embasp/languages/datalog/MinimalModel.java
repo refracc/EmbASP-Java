@@ -12,16 +12,9 @@ import java.util.Set;
  * @see HashMap
  * @see List
  */
-
 public class MinimalModel {
 
-  /**
-   * The string representations of the atoms of the model are stored here
-   */
   private final Set<String> atomStringCollection;
-  /**
-   * The object representations of the atoms of the model (only those which are mapped to a class) are stored here
-   */
   private Set<Object> atomObjectCollection;
 
   public MinimalModel(final Set<String> atomList) {
