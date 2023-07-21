@@ -122,9 +122,9 @@ public class DLVDesktopServiceTest {
 
 			Assert.assertTrue("Found error in the Plan\n" + answerSets.getErrors(), answerSets.getErrors().isEmpty());
 
-			Assert.assertTrue(answerSets.getAnswersets().size() != 0);
+			Assert.assertTrue(answerSets.getAnswerSets().size() != 0);
 			
-			final AnswerSet as = answerSets.getAnswersets().get(0);
+			final AnswerSet as = answerSets.getAnswerSets().get(0);
 			for (final Object obj : as.getAtoms()) {
 				final Cell cell = (Cell) obj;
 				sudokuMatrix[cell.getRow()][cell.getColumn()] = cell.getValue();

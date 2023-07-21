@@ -15,7 +15,7 @@ public abstract class AnswerSets extends Output implements ASPDataCollection {
   /**
    * Where Answer Sets are stored
    */
-  protected List<AnswerSet> answersets;
+  protected List<AnswerSet> answerSets;
 
   public AnswerSets(final String out) {
     super(out);
@@ -30,18 +30,18 @@ public abstract class AnswerSets extends Output implements ASPDataCollection {
     return super.clone();
   }
 
-  public List<AnswerSet> getAnswersets() {
-    if (answersets == null) {
-      answersets = new ArrayList<>();
+  public List<AnswerSet> getAnswerSets() {
+    if (answerSets == null) {
+      answerSets = new ArrayList<>();
       parse();
     }
 
-    return Collections.unmodifiableList(answersets);
+    return Collections.unmodifiableList(answerSets);
   }
 
   public List<AnswerSet> getOptimalAnswerSets() {
     int level = 0;
-    List<AnswerSet> answerSets = getAnswersets(), optimalAnswerSets = new ArrayList<>();
+    List<AnswerSet> answerSets = getAnswerSets(), optimalAnswerSets = new ArrayList<>();
 
     for (final AnswerSet answerSet : answerSets) {
       final int maxLevel = Collections.max(answerSet.getWeights().keySet());
@@ -78,16 +78,16 @@ public abstract class AnswerSets extends Output implements ASPDataCollection {
 
   @Override
   public void addAnswerSet() {
-    answersets.add(new AnswerSet(new ArrayList<String>()));
+    answerSets.add(new AnswerSet(new ArrayList<String>()));
   }
 
   @Override
   public void storeAtom(final String result) {
-    answersets.get(answersets.size() - 1).getValue().add(result);
+    answerSets.get(answerSets.size() - 1).getValue().add(result);
   }
 
   @Override
   public void storeCost(final int level, final int weight) {
-    answersets.get(answersets.size() - 1).getLevelWeight().put(level, weight);
+    answerSets.get(answerSets.size() - 1).getLevelWeight().put(level, weight);
   }
 }
