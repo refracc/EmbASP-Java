@@ -54,7 +54,7 @@ public class IDLVParserBaseVisitorImplementation extends IDLVParserBaseVisitor<V
 
   @Override
   public Void visitMinimal_model(IDLVParser.Minimal_modelContext ctx) {
-    modelCurrentlyBeingVisited = new MinimalModel(new HashSet<String>());
+    modelCurrentlyBeingVisited = new MinimalModel(new HashSet<>());
     models.addMinimalModel(modelCurrentlyBeingVisited);
     return visitChildren(ctx);
   }

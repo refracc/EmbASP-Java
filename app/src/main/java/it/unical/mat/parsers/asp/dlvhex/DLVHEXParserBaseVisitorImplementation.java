@@ -18,7 +18,6 @@ public class DLVHEXParserBaseVisitorImplementation extends DLVHEXParserBaseVisit
 
     if (!two_stageParsing) {
       visitor.visit(parser.output());
-
       return;
     }
 

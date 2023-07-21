@@ -5,6 +5,7 @@ import it.unical.mat.parsers.pddl.pddl_parser_base.PDDLGrammarLexer;
 import it.unical.mat.parsers.pddl.pddl_parser_base.PDDLGrammarParser;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.atn.PredictionMode;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -15,7 +16,7 @@ public class PDDLParser extends PDDLGrammarBaseVisitor<Void> {
 
   }
 
-  public static final PDDLParser parse(final String action) {
+  public static @NotNull PDDLParser parse(final String action) {
     final CommonTokenStream tokens = new CommonTokenStream(new PDDLGrammarLexer(CharStreams.fromString(action)));
     final PDDLGrammarParser parser = new PDDLGrammarParser(tokens);
     final PDDLParser visitor = new PDDLParser();
@@ -44,7 +45,7 @@ public class PDDLParser extends PDDLGrammarBaseVisitor<Void> {
   }
 
   @Override
-  public Void visitAtom(PDDLGrammarParser.AtomContext ctx) {
+  public Void visitAtom(PDDLGrammarParser.@NotNull AtomContext ctx) {
     for (int index = 1; index < ctx.IDENTIFIER().size(); index++)
       parameters.add(ctx.IDENTIFIER(index).getText());
 
