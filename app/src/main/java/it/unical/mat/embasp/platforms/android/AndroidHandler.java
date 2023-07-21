@@ -26,15 +26,8 @@ public class AndroidHandler extends Handler {
     try {
 
       service = (AndroidService) Class.forName(b.getName()).getDeclaredConstructor(Context.class).newInstance(c);
-    } catch (InstantiationException e) {
-      e.printStackTrace();
-    } catch (IllegalAccessException e) {
-      e.printStackTrace();
-    } catch (ClassNotFoundException e) {
-      e.printStackTrace();
-    } catch (NoSuchMethodException e) {
-      e.printStackTrace();
-    } catch (InvocationTargetException e) {
+    } catch (InstantiationException | ClassNotFoundException | IllegalAccessException | NoSuchMethodException |
+             InvocationTargetException e) {
       e.printStackTrace();
     }
   }

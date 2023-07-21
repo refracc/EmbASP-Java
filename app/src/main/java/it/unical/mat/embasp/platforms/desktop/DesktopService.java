@@ -51,12 +51,7 @@ public abstract class DesktopService implements Service {
   @Override
   public void startAsync(final Callback callback, final List<InputProgram> programs, final List<OptionDescriptor> options) {
 
-    new Thread() {
-      @Override
-      public void run() {
-        callback.callback(startSync(programs, options));
-      }
-    }.start();
+    new Thread(() -> callback.callback(startSync(programs, options))).start();
 
   }
 
@@ -68,25 +63,25 @@ public abstract class DesktopService implements Service {
   @Override
   public Output startSync(final List<InputProgram> programs, final List<OptionDescriptor> options) {
 
-    String option = "";
+    StringBuilder option = new StringBuilder();
     for (final OptionDescriptor o : options)
       if (o != null) {
-        option += o.getOptions();
-        option += o.getSeparator();
+        option.append(o.getOptions());
+        option.append(o.getSeparator());
       } else
         System.err.println("Warning : wrong " + OptionDescriptor.class.getName());
 
-    String files_paths = "";
-    String final_program = "";
+    StringBuilder files_paths = new StringBuilder();
+    StringBuilder final_program = new StringBuilder();
 
     for (final InputProgram p : programs)
       if (p != null) {
-        final_program += p.getPrograms();
+        final_program.append(p.getPrograms());
         for (final String program_file : p.getFilesPaths()) {
           File f = new File(program_file);
           if (f.exists() && !f.isDirectory()) {
-            files_paths += program_file;
-            files_paths += " ";
+            files_paths.append(program_file);
+            files_paths.append(" ");
           } else
             System.err.println("Warning : the file " + f.getAbsolutePath() + " does not exists.");
         }
@@ -106,7 +101,7 @@ public abstract class DesktopService implements Service {
       final StringBuffer stringBuffer = new StringBuffer();
       stringBuffer.append(exe_path).append(" ").append(option).append(" ").append(files_paths);
 
-      if (!final_program.isEmpty()) {
+      if (final_program.length() > 0) {
         stringBuffer.append(this.load_from_STDIN_option);
       }
 
@@ -114,49 +109,42 @@ public abstract class DesktopService implements Service {
 
       final Process solver_process = Runtime.getRuntime().exec(stringBuffer.toString());
 
-      Thread threadOutput = new Thread() {
-        @Override
-        public void run() {
-          try {
+      Thread threadOutput = new Thread(() -> {
+        try {
 
-            final BufferedReader bufferedReaderOutput = new BufferedReader(new InputStreamReader(solver_process.getInputStream()));
+          final BufferedReader bufferedReaderOutput = new BufferedReader(new InputStreamReader(solver_process.getInputStream()));
 
-            // Read output of the solver and store in solverOutput
-            String currentLine;
-            while ((currentLine = bufferedReaderOutput.readLine()) != null)
-              solverOutput.append(currentLine + "\n");
-          } catch (final IOException e) {
-            e.printStackTrace();
-          }
-
+          // Read output of the solver and store in solverOutput
+          String currentLine;
+          while ((currentLine = bufferedReaderOutput.readLine()) != null)
+            solverOutput.append(currentLine).append("\n");
+        } catch (final IOException e) {
+          e.printStackTrace();
         }
-      };
+
+      });
       threadOutput.start();
 
-      Thread threadError = new Thread() {
-        @Override
-        public void run() {
-          try {
+      Thread threadError = new Thread(() -> {
+        try {
 
-            final BufferedReader bufferedReaderError = new BufferedReader(new InputStreamReader(solver_process.getErrorStream()));
+          final BufferedReader bufferedReaderError = new BufferedReader(new InputStreamReader(solver_process.getErrorStream()));
 
-            String currentErrLine;
-            while ((currentErrLine = bufferedReaderError.readLine()) != null)
-              solverError.append(currentErrLine + "\n");
+          String currentErrLine;
+          while ((currentErrLine = bufferedReaderError.readLine()) != null)
+            solverError.append(currentErrLine).append("\n");
 
-          } catch (final IOException e) {
-            e.printStackTrace();
-          }
-
+        } catch (final IOException e) {
+          e.printStackTrace();
         }
-      };
+
+      });
       threadError.start();
 
-      if (!final_program.isEmpty()) {
+      if (final_program.length() > 0) {
         final PrintWriter writer = new PrintWriter(solver_process.getOutputStream());
         writer.println(final_program);
-        if (writer != null)
-          writer.close();
+        writer.close();
         solver_process.waitFor();
       }
 
@@ -168,9 +156,7 @@ public abstract class DesktopService implements Service {
 
       return getOutput(solverOutput.toString(), solverError.toString());
 
-    } catch (final IOException e2) {
-      e2.printStackTrace();
-    } catch (final InterruptedException e) {
+    } catch (final IOException | InterruptedException e) {
       e.printStackTrace();
     }
 
