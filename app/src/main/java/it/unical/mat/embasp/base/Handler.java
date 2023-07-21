@@ -104,15 +104,14 @@ public abstract class Handler {
 	/**
 	 * Returns the specified {@link OptionDescriptor} element
 	 *
-	 * @param key
-	 *            the id
+	 * @param key the id
 	 * @return {@link OptionDescriptor} element associate with the given key
 	 */
 	public OptionDescriptor getOptionDescriptor(final int key) {
 		return options.get(key);
 	}
 
-	/** Removes all of the elements from {@link #programs} and {@link #options}.Both of the collections will be empty after this method returns */
+	/** Removes all the elements from {@link #programs} and {@link #options}.Both of the collections will be empty after this method returns */
 	public void removeAll() {
 
 		programs.clear();
@@ -189,7 +188,7 @@ public abstract class Handler {
 	}
 
 	/**
-	 * This method have to be implemented by subclasses to execute solver in a asynchronous way, if no parameters are given
+	 * This method have to be implemented by subclasses to execute solver in an asynchronous way, if no parameters are given
 	 * the entire sets of programs and option are used
 	 */
 	public void startAsync(final Callback c, final List<Integer> program_index, final List<Integer> option_index) {
@@ -198,7 +197,7 @@ public abstract class Handler {
 	/** @see #startSync(List, List) */
 	public Output startSync() {
 
-		return startSync((List<Integer>) null, (List<Integer>) null);
+		return startSync( null, null);
 	}
 
 	/**
