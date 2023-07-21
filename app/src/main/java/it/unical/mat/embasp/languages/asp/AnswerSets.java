@@ -78,7 +78,7 @@ public abstract class AnswerSets extends Output implements ASPDataCollection {
 
   @Override
   public void addAnswerSet() {
-    answerSets.add(new AnswerSet(new ArrayList<String>()));
+    answerSets.add(new AnswerSet(new ArrayList<>()));
   }
 
   @Override
