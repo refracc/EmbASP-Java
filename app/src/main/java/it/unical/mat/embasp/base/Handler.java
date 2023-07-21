@@ -184,7 +184,7 @@ public abstract class Handler {
 
 	/** @see Service */
 	public void startAsync(final Callback c) {
-		startAsync(c, (List<Integer>) null, (List<Integer>) null);
+		startAsync(c, null, null);
 	}
 
 	/**
