@@ -6,5 +6,5 @@ package it.unical.mat.embasp.base;
  * @see Output
  */
 public interface Callback {
-	void callback(Output o);
+  void callback(Output o);
 }

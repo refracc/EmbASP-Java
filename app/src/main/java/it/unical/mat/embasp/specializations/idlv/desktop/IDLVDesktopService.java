@@ -12,27 +12,27 @@ import java.util.List;
 
 public class IDLVDesktopService extends DesktopService {
 
-    public IDLVDesktopService(final String exe_path) {
-        super(exe_path);
-        load_from_STDIN_option = "--stdin";
-    }
+  public IDLVDesktopService(final String exe_path) {
+    super(exe_path);
+    load_from_STDIN_option = "--stdin";
+  }
 
-    @Override
-    protected Output getOutput(final String output, final String error) {
-        return new IDLVMinimalModels(output, error);
-    }
+  @Override
+  protected Output getOutput(final String output, final String error) {
+    return new IDLVMinimalModels(output, error);
+  }
 
-    @Override
-    public void startAsync(final Callback callback, final List<InputProgram> programs, final List<OptionDescriptor> options) {
-        super.startAsync(callback, programs, options);
-    }
+  @Override
+  public void startAsync(final Callback callback, final List<InputProgram> programs, final List<OptionDescriptor> options) {
+    super.startAsync(callback, programs, options);
+  }
 
-    @Override
-    public Output startSync(final List<InputProgram> programs, List<OptionDescriptor> options) {
-        ArrayList<OptionDescriptor> newOptions = new ArrayList<>(options);
-        newOptions.add(new OptionDescriptor("--t"));
-        return super.startSync(programs, newOptions);
-    }
+  @Override
+  public Output startSync(final List<InputProgram> programs, List<OptionDescriptor> options) {
+    ArrayList<OptionDescriptor> newOptions = new ArrayList<>(options);
+    newOptions.add(new OptionDescriptor("--t"));
+    return super.startSync(programs, newOptions);
+  }
 }
 
 

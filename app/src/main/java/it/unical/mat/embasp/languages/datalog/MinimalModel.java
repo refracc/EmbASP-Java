@@ -15,45 +15,45 @@ import java.util.Set;
 
 public class MinimalModel {
 
-    /**
-     * The string representations of the atoms of the model are stored here
-     */
-    private final Set<String> atomStringCollection;
-    /**
-     * The object representations of the atoms of the model (only those which are mapped to a class) are stored here
-     */
-    private Set<Object> atomObjectCollection;
+  /**
+   * The string representations of the atoms of the model are stored here
+   */
+  private final Set<String> atomStringCollection;
+  /**
+   * The object representations of the atoms of the model (only those which are mapped to a class) are stored here
+   */
+  private Set<Object> atomObjectCollection;
 
-    public MinimalModel(final Set<String> atomList) {
-        atomStringCollection = atomList;
+  public MinimalModel(final Set<String> atomList) {
+    atomStringCollection = atomList;
+  }
+
+  /**
+   * Return the current {@link #atomStringCollection} data
+   *
+   * @return a set of String objects, each representing a different atom of the model
+   */
+  public Set<String> getAtomsAsStringList() {
+    return atomStringCollection;
+  }
+
+  /**
+   * Return atoms stored in {@link #atomObjectCollection}
+   *
+   * @return a set of filled atom Objects
+   */
+  public Set<Object> getAtomsAsObjectSet() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException,
+      InstantiationException {
+    if (atomObjectCollection == null) {
+      atomObjectCollection = new HashSet<>();
+
+      for (final String atom : atomStringCollection) {
+        final Object obj = DatalogMapper.getInstance().getObject(atom);
+        if (obj != null)
+          atomObjectCollection.add(obj);
+      }
     }
-
-    /**
-     * Return the current {@link #atomStringCollection} data
-     *
-     * @return a set of String objects, each representing a different atom of the model
-     */
-    public Set<String> getAtomsAsStringList() {
-        return atomStringCollection;
-    }
-
-    /**
-     * Return atoms stored in {@link #atomObjectCollection}
-     *
-     * @return a set of filled atom Objects
-     */
-    public Set<Object> getAtomsAsObjectSet() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException,
-            InstantiationException {
-        if (atomObjectCollection == null) {
-            atomObjectCollection = new HashSet<>();
-
-            for (final String atom : atomStringCollection) {
-                final Object obj = DatalogMapper.getInstance().getObject(atom);
-                if (obj != null)
-                    atomObjectCollection.add(obj);
-            }
-        }
-        return atomObjectCollection;
-    }
+    return atomObjectCollection;
+  }
 
 }

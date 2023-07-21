@@ -6,14 +6,14 @@ import it.unical.mat.embasp.specializations.dlvhex.DLVHEXAnswerSets;
 
 public class DLVHEXDesktopService extends DesktopService {
 
-	public DLVHEXDesktopService(final String exe_path) {
-		super(exe_path);
-		
-		load_from_STDIN_option = "--";
-	}
+  public DLVHEXDesktopService(final String exe_path) {
+    super(exe_path);
 
-	@Override
-	protected Output getOutput(final String output, final String error) {
-		return new DLVHEXAnswerSets(output, error);
-	}
+    load_from_STDIN_option = "--";
+  }
+
+  @Override
+  protected Output getOutput(final String output, final String error) {
+    return new DLVHEXAnswerSets(output, error);
+  }
 }

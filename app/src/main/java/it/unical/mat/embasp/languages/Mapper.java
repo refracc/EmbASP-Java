@@ -1,14 +1,14 @@
 package it.unical.mat.embasp.languages;
 
+import it.unical.mat.embasp.languages.asp.IllegalTermException;
+import it.unical.mat.embasp.languages.asp.SymbolicConstant;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
-
-import it.unical.mat.embasp.languages.asp.IllegalTermException;
-import it.unical.mat.embasp.languages.asp.SymbolicConstant;
 
 /**
  * Base class
@@ -17,143 +17,139 @@ import it.unical.mat.embasp.languages.asp.SymbolicConstant;
 
 public abstract class Mapper {
 
-	protected final Map<String, Class<?>> predicateClass = new HashMap<>();
+  protected final Map<String, Class<?>> predicateClass = new HashMap<>();
 
-	protected final Map<Class<?>, Map<String, Method>> classSetterMethod = new HashMap<>();
+  protected final Map<Class<?>, Map<String, Method>> classSetterMethod = new HashMap<>();
 
-	protected abstract String getActualString(String predicate, HashMap<Integer, Object> parametersMap) throws IllegalTermException;
+  protected abstract String getActualString(String predicate, HashMap<Integer, Object> parametersMap) throws IllegalTermException;
 
-	public Class<?> getClass(final String predicate) {
-		return predicateClass.get(predicate);
-	}
-	
-	/**
-	 * Returns an Object for the given string
-	 *
-	 * @param string
-	 *            String from witch data are extrapolated
-	 * @return Object for the given String data
-	 * @throws IllegalAccessException,
-	 *             IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, IllegalTermException
-	 */
-	public Object getObject(final String atom) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
-			SecurityException, InstantiationException {
-		final String predicate = getId(atom);
-		
-		if(predicate == null)
-			return null;
-		
-		final Class<?> cl = getClass(predicate);
+  public Class<?> getClass(final String predicate) {
+    return predicateClass.get(predicate);
+  }
 
-		if(cl == null)
-			return null;
-		
-		final String[] parameters = getParam(atom);
-			
-		if(parameters == null)
-			return null;
+  /**
+   * Returns an Object for the given string
+   *
+   * @param string String from witch data are extrapolated
+   * @return Object for the given String data
+   * @throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, IllegalTermException
+   */
+  public Object getObject(final String atom) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+      SecurityException, InstantiationException {
+    final String predicate = getId(atom);
 
-		final Object object = cl.newInstance();
+    if (predicate == null)
+      return null;
 
-		populateObject(cl, parameters, object);
+    final Class<?> cl = getClass(predicate);
 
-		return object;
-	}
-	
-	/**
-	 * @return The predicate name
-	 */
-	protected abstract String getId(final String atom);
-	
-	/**
-	 * @return All the Terms
-	 */
-	protected abstract String[] getParam(final String atom);
-	
-	/**
-	 * Returns data for the given Object
-	 *
-	 * @param obj
-	 *            Object from witch data are extrapolated
-	 * @return String data for the given Object in a String format
-	 * @throws IllegalAccessException,
-	 *             IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, IllegalTermException, IllegalTermException
-	 */
-	public String getString(final Object obj) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
-			SecurityException, ObjectNotValidException, IllegalAnnotationException, IllegalTermException {
-		final String predicate = registerClass(obj.getClass());
+    if (cl == null)
+      return null;
 
-		final HashMap<Integer, Object> parametersMap = new HashMap<>();
-		for (final Field field : obj.getClass().getDeclaredFields()) {
-			if (field.isSynthetic())
-				continue;
-			if (field.isAnnotationPresent(Param.class)) {
-				final Object value = obj.getClass().getMethod("get" + Character.toUpperCase(field.getName().charAt(0)) + field.getName().substring(1))
-						.invoke(obj);
-				parametersMap.put(field.getAnnotation(Param.class).value(), value);
-			}
-		}
-		return getActualString(predicate, parametersMap);
-	}
+    final String[] parameters = getParam(atom);
 
-	private void populateObject(final Class<?> cl, final String[] parameters, final Object obj) throws IllegalAccessException, InvocationTargetException {
-		for (final Field field : cl.getDeclaredFields())
-			if (field.isAnnotationPresent(Param.class)) {
+    if (parameters == null)
+      return null;
 
-				final int term = field.getAnnotation(Param.class).value();
-				final String nameMethod = "set" + Character.toUpperCase(field.getName().charAt(0)) + field.getName().substring(1);
-				final Method method = classSetterMethod.get(cl).get(nameMethod);
+    final Object object = cl.newInstance();
 
-				if (method.getParameterTypes()[0].getName().equals(int.class.getName())
-						|| method.getParameterTypes()[0].getName().equals(Integer.class.getName()))
-					method.invoke(obj, Integer.valueOf(parameters[term]));
-				else if (method.getParameterTypes()[0].getName().equals(SymbolicConstant.class.getName()))
-						method.invoke(obj, new SymbolicConstant(parameters[term]));
-				else
-					method.invoke(obj, parameters[term]);
+    populateObject(cl, parameters, object);
 
-			}
-	}
+    return object;
+  }
 
-	/**
-	 * insert an object into {@link #predicateClass} and {@link #classSetterMethod}
-	 *
-	 * @return String representing pairing key of {@link #predicateClass}
-	 */
-	public String registerClass(final Class<?> cl) throws ObjectNotValidException, IllegalAnnotationException {
+  /**
+   * @return The predicate name
+   */
+  protected abstract String getId(final String atom);
 
-		final Annotation annotation = cl.getAnnotation(Id.class);
+  /**
+   * @return All the Terms
+   */
+  protected abstract String[] getParam(final String atom);
 
-		if (annotation == null)
-			throw new IllegalAnnotationException();
+  /**
+   * Returns data for the given Object
+   *
+   * @param obj Object from witch data are extrapolated
+   * @return String data for the given Object in a String format
+   * @throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, IllegalTermException, IllegalTermException
+   */
+  public String getString(final Object obj) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException,
+      SecurityException, ObjectNotValidException, IllegalAnnotationException, IllegalTermException {
+    final String predicate = registerClass(obj.getClass());
 
-		final String predicate = ((Id) annotation).value();
+    final HashMap<Integer, Object> parametersMap = new HashMap<>();
+    for (final Field field : obj.getClass().getDeclaredFields()) {
+      if (field.isSynthetic())
+        continue;
+      if (field.isAnnotationPresent(Param.class)) {
+        final Object value = obj.getClass().getMethod("get" + Character.toUpperCase(field.getName().charAt(0)) + field.getName().substring(1))
+            .invoke(obj);
+        parametersMap.put(field.getAnnotation(Param.class).value(), value);
+      }
+    }
+    return getActualString(predicate, parametersMap);
+  }
 
-		if (predicate.contains(" "))
-			throw new ObjectNotValidException();
+  private void populateObject(final Class<?> cl, final String[] parameters, final Object obj) throws IllegalAccessException, InvocationTargetException {
+    for (final Field field : cl.getDeclaredFields())
+      if (field.isAnnotationPresent(Param.class)) {
 
-		// String predicate = cl.getAnnotation(Predicate.class).value();
-		predicateClass.put(predicate, cl);
-		final Map<String, Method> namesMethods = new HashMap<>();
-		for (final Method method : cl.getMethods())
-			if (method.getName().startsWith("set"))
-				namesMethods.put(method.getName(), method);
-		classSetterMethod.put(cl, namesMethods);
-		return predicate;
-	}
+        final int term = field.getAnnotation(Param.class).value();
+        final String nameMethod = "set" + Character.toUpperCase(field.getName().charAt(0)) + field.getName().substring(1);
+        final Method method = classSetterMethod.get(cl).get(nameMethod);
 
-	public void unregisterClass(final Class<?> cl) throws IllegalAnnotationException {
+        if (method.getParameterTypes()[0].getName().equals(int.class.getName())
+            || method.getParameterTypes()[0].getName().equals(Integer.class.getName()))
+          method.invoke(obj, Integer.valueOf(parameters[term]));
+        else if (method.getParameterTypes()[0].getName().equals(SymbolicConstant.class.getName()))
+          method.invoke(obj, new SymbolicConstant(parameters[term]));
+        else
+          method.invoke(obj, parameters[term]);
 
-		final Annotation annotation = cl.getAnnotation(Id.class);
+      }
+  }
 
-		if (annotation == null)
-			throw new IllegalAnnotationException();
+  /**
+   * insert an object into {@link #predicateClass} and {@link #classSetterMethod}
+   *
+   * @return String representing pairing key of {@link #predicateClass}
+   */
+  public String registerClass(final Class<?> cl) throws ObjectNotValidException, IllegalAnnotationException {
 
-		final String predicate = ((Id) annotation).value();
+    final Annotation annotation = cl.getAnnotation(Id.class);
 
-		predicateClass.remove(predicate);
-		classSetterMethod.remove(cl);
+    if (annotation == null)
+      throw new IllegalAnnotationException();
 
-	}
+    final String predicate = ((Id) annotation).value();
+
+    if (predicate.contains(" "))
+      throw new ObjectNotValidException();
+
+    // String predicate = cl.getAnnotation(Predicate.class).value();
+    predicateClass.put(predicate, cl);
+    final Map<String, Method> namesMethods = new HashMap<>();
+    for (final Method method : cl.getMethods())
+      if (method.getName().startsWith("set"))
+        namesMethods.put(method.getName(), method);
+    classSetterMethod.put(cl, namesMethods);
+    return predicate;
+  }
+
+  public void unregisterClass(final Class<?> cl) throws IllegalAnnotationException {
+
+    final Annotation annotation = cl.getAnnotation(Id.class);
+
+    if (annotation == null)
+      throw new IllegalAnnotationException();
+
+    final String predicate = ((Id) annotation).value();
+
+    predicateClass.remove(predicate);
+    classSetterMethod.remove(cl);
+
+  }
 
 }

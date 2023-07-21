@@ -5,16 +5,16 @@ import it.unical.mat.parsers.pddl.PDDLSolversParser;
 
 public class SPDPlan extends Plan {
 
-	public SPDPlan(final String plan, final String error) {
-		super(plan, error);
-	}
+  public SPDPlan(final String plan, final String error) {
+    super(plan, error);
+  }
 
-	@Override
-	protected void parse() {
-		if((errors != null && !errors.isEmpty()) || (output != null && output.isEmpty()))
-		    return;
-		
-		errors += PDDLSolversParser.parseSolverPlanningDomains(this, output, true);
-	}
+  @Override
+  protected void parse() {
+    if ((errors != null && !errors.isEmpty()) || (output != null && output.isEmpty()))
+      return;
+
+    errors += PDDLSolversParser.parseSolverPlanningDomains(this, output, true);
+  }
 
 }

@@ -9,6 +9,6 @@ import it.unical.mat.embasp.languages.datalog.MinimalModels;
 
 public interface DatalogDataCollection {
 
-    void addMinimalModel(MinimalModel minimalModel);
+  void addMinimalModel(MinimalModel minimalModel);
 
 }

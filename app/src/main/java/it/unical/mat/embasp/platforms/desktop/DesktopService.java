@@ -6,18 +6,10 @@
  */
 package it.unical.mat.embasp.platforms.desktop;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.util.List;
+import it.unical.mat.embasp.base.*;
 
-import it.unical.mat.embasp.base.Callback;
-import it.unical.mat.embasp.base.InputProgram;
-import it.unical.mat.embasp.base.OptionDescriptor;
-import it.unical.mat.embasp.base.Output;
-import it.unical.mat.embasp.base.Service;
+import java.io.*;
+import java.util.List;
 
 /**
  * is a specialization for a Desktop platform
@@ -26,164 +18,164 @@ import it.unical.mat.embasp.base.Service;
  */
 
 public abstract class DesktopService implements Service {
-	/** Stores solver's executable path */
-	protected String exe_path;
-	protected String load_from_STDIN_option;
+  /**
+   * Stores solver's executable path
+   */
+  protected String exe_path;
+  protected String load_from_STDIN_option;
 
-	public DesktopService(final String exe_path) {
-		this.exe_path = exe_path;
-	}
+  public DesktopService(final String exe_path) {
+    this.exe_path = exe_path;
+  }
 
-	public String getExePath() {
-		return exe_path;
-	}
+  public String getExePath() {
+    return exe_path;
+  }
 
-	abstract protected Output getOutput(String output, String error);
+  /**
+   * set {@link #exe_path} to a new path*
+   *
+   * @param exe_path a string representing the path for the new solver
+   */
+  public void setExePath(final String exe_path) {
+    this.exe_path = exe_path;
+  }
 
-	/**
-	 * set {@link #exe_path} to a new path*
-	 *
-	 * @param exe_path
-	 *            a string representing the path for the new solver
-	 */
-	public void setExePath(final String exe_path) {
-		this.exe_path = exe_path;
-	}
+  abstract protected Output getOutput(String output, String error);
 
-	/**
-	 * Start a new process for the {@link #exe_path} and starts solving
-	 *
-	 * @see it.unical.mat.embasp.base.Service#startAsync(Callback, List, List)
-	 */
-	@Override
-	public void startAsync(final Callback callback, final List<InputProgram> programs, final List<OptionDescriptor> options) {
+  /**
+   * Start a new process for the {@link #exe_path} and starts solving
+   *
+   * @see it.unical.mat.embasp.base.Service#startAsync(Callback, List, List)
+   */
+  @Override
+  public void startAsync(final Callback callback, final List<InputProgram> programs, final List<OptionDescriptor> options) {
 
-		new Thread() {
-			@Override
-			public void run() {
-				callback.callback(startSync(programs, options));
-			}
-		}.start();
+    new Thread() {
+      @Override
+      public void run() {
+        callback.callback(startSync(programs, options));
+      }
+    }.start();
 
-	}
+  }
 
-	/**
-	 * Start a new process for the {@link #exe_path} and starts solving
-	 *
-	 * @see it.unical.mat.embasp.base.Service#startSync(List, List)
-	 */
-	@Override
-	public Output startSync(final List<InputProgram> programs, final List<OptionDescriptor> options) {
+  /**
+   * Start a new process for the {@link #exe_path} and starts solving
+   *
+   * @see it.unical.mat.embasp.base.Service#startSync(List, List)
+   */
+  @Override
+  public Output startSync(final List<InputProgram> programs, final List<OptionDescriptor> options) {
 
-		String option = new String();
-		for (final OptionDescriptor o : options)
-			if (o != null) {
-				option += o.getOptions();
-				option += o.getSeparator();
-			} else
-				System.err.println("Warning : wrong " + OptionDescriptor.class.getName());
+    String option = "";
+    for (final OptionDescriptor o : options)
+      if (o != null) {
+        option += o.getOptions();
+        option += o.getSeparator();
+      } else
+        System.err.println("Warning : wrong " + OptionDescriptor.class.getName());
 
-		String files_paths = new String();
-		String final_program = new String();
+    String files_paths = "";
+    String final_program = "";
 
-		for (final InputProgram p : programs)
-			if (p != null) {
-				final_program += p.getPrograms();
-				for(final String program_file: p.getFilesPaths()){
-					File f = new File(program_file);
-					if(f.exists() && !f.isDirectory()) { 
-						files_paths += program_file;
-						files_paths += " ";
-					}
-					else
-						System.err.println("Warning : the file " + f.getAbsolutePath() + " does not exists.");
-				}
-			} else
-				System.err.println("Warning : wrong " + InputProgram.class.getName());
+    for (final InputProgram p : programs)
+      if (p != null) {
+        final_program += p.getPrograms();
+        for (final String program_file : p.getFilesPaths()) {
+          File f = new File(program_file);
+          if (f.exists() && !f.isDirectory()) {
+            files_paths += program_file;
+            files_paths += " ";
+          } else
+            System.err.println("Warning : the file " + f.getAbsolutePath() + " does not exists.");
+        }
+      } else
+        System.err.println("Warning : wrong " + InputProgram.class.getName());
 
-		final StringBuffer solverOutput = new StringBuffer();
-		final StringBuffer solverError = new StringBuffer();
+    final StringBuffer solverOutput = new StringBuffer();
+    final StringBuffer solverError = new StringBuffer();
 
-		try {
+    try {
 
-			final long startTime = System.nanoTime();
-			
-			if (exe_path == null)
-				return new Output("", "Error: executable not found");
-			
-			final StringBuffer stringBuffer = new StringBuffer();
-			stringBuffer.append(exe_path).append(" ").append(option).append(" ").append(files_paths);
-			
-			if (!final_program.isEmpty()){
-				stringBuffer.append(this.load_from_STDIN_option);
-			}
+      final long startTime = System.nanoTime();
 
-			System.err.println(stringBuffer.toString());
-			
-			final Process solver_process = Runtime.getRuntime().exec(stringBuffer.toString());
-			
-			Thread threadOutput=new Thread() {
-				@Override
-				public void run() {
-					try {
+      if (exe_path == null)
+        return new Output("", "Error: executable not found");
 
-						final BufferedReader bufferedReaderOutput = new BufferedReader(new InputStreamReader(solver_process.getInputStream()));
+      final StringBuffer stringBuffer = new StringBuffer();
+      stringBuffer.append(exe_path).append(" ").append(option).append(" ").append(files_paths);
 
-						// Read output of the solver and store in solverOutput
-						String currentLine;
-						while ((currentLine = bufferedReaderOutput.readLine()) != null)
-							solverOutput.append(currentLine + "\n");
-					} catch (final IOException e) {
-						e.printStackTrace();
-					}
+      if (!final_program.isEmpty()) {
+        stringBuffer.append(this.load_from_STDIN_option);
+      }
 
-				}
-			};
-			threadOutput.start();
-			
-			Thread threadError = new Thread() {
-				@Override
-				public void run() {
-					try {
+      System.err.println(stringBuffer);
 
-						final BufferedReader bufferedReaderError = new BufferedReader(new InputStreamReader(solver_process.getErrorStream()));
+      final Process solver_process = Runtime.getRuntime().exec(stringBuffer.toString());
 
-						String currentErrLine;
-						while ((currentErrLine = bufferedReaderError.readLine()) != null)
-							solverError.append(currentErrLine + "\n");
+      Thread threadOutput = new Thread() {
+        @Override
+        public void run() {
+          try {
 
-					} catch (final IOException e) {
-						e.printStackTrace();
-					}
+            final BufferedReader bufferedReaderOutput = new BufferedReader(new InputStreamReader(solver_process.getInputStream()));
 
-				}
-			};
-			threadError.start();
+            // Read output of the solver and store in solverOutput
+            String currentLine;
+            while ((currentLine = bufferedReaderOutput.readLine()) != null)
+              solverOutput.append(currentLine + "\n");
+          } catch (final IOException e) {
+            e.printStackTrace();
+          }
 
-			if(!final_program.isEmpty()) {
-				final PrintWriter writer = new PrintWriter(solver_process.getOutputStream());
-				writer.println(final_program);
-				if (writer != null)
-					writer.close();
-				solver_process.waitFor();
-			}
+        }
+      };
+      threadOutput.start();
 
-			threadOutput.join();
-			threadError.join();
+      Thread threadError = new Thread() {
+        @Override
+        public void run() {
+          try {
 
-			final long stopTime = System.nanoTime();
-			System.err.println("Total time : " + (stopTime - startTime));
-			
-			return getOutput(solverOutput.toString(), solverError.toString());
+            final BufferedReader bufferedReaderError = new BufferedReader(new InputStreamReader(solver_process.getErrorStream()));
 
-		} catch (final IOException e2) {
-			e2.printStackTrace();
-		} catch (final InterruptedException e) {
-			e.printStackTrace();
-		}
+            String currentErrLine;
+            while ((currentErrLine = bufferedReaderError.readLine()) != null)
+              solverError.append(currentErrLine + "\n");
 
-		return getOutput("", "");
+          } catch (final IOException e) {
+            e.printStackTrace();
+          }
 
-	}
+        }
+      };
+      threadError.start();
+
+      if (!final_program.isEmpty()) {
+        final PrintWriter writer = new PrintWriter(solver_process.getOutputStream());
+        writer.println(final_program);
+        if (writer != null)
+          writer.close();
+        solver_process.waitFor();
+      }
+
+      threadOutput.join();
+      threadError.join();
+
+      final long stopTime = System.nanoTime();
+      System.err.println("Total time : " + (stopTime - startTime));
+
+      return getOutput(solverOutput.toString(), solverError.toString());
+
+    } catch (final IOException e2) {
+      e2.printStackTrace();
+    } catch (final InterruptedException e) {
+      e.printStackTrace();
+    }
+
+    return getOutput("", "");
+
+  }
 
 }
