@@ -6,6 +6,7 @@ import it.unical.mat.embasp.base.OptionDescriptor;
 import it.unical.mat.embasp.base.Output;
 import it.unical.mat.embasp.platforms.desktop.DesktopService;
 import it.unical.mat.embasp.specializations.idlv.IDLVMinimalModels;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +29,7 @@ public class IDLVDesktopService extends DesktopService {
   }
 
   @Override
-  public Output startSync(final List<InputProgram> programs, List<OptionDescriptor> options) {
+  public Output startSync(final List<InputProgram> programs, @NotNull List<OptionDescriptor> options) {
     ArrayList<OptionDescriptor> newOptions = new ArrayList<>(options);
     newOptions.add(new OptionDescriptor("--t"));
     return super.startSync(programs, newOptions);

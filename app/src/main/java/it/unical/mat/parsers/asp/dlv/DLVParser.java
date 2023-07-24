@@ -8,6 +8,7 @@ import org.antlr.v4.runtime.atn.PredictionContextCache;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 import org.antlr.v4.runtime.tree.TerminalNode;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -261,7 +262,7 @@ public class DLVParser extends Parser {
     return _localctx;
   }
 
-  public final CostContext cost() throws RecognitionException {
+  public final @NotNull CostContext cost() throws RecognitionException {
     CostContext _localctx = new CostContext(_ctx, getState());
     enterRule(_localctx, 2, RULE_cost);
     int _la;
@@ -301,7 +302,7 @@ public class DLVParser extends Parser {
     return _localctx;
   }
 
-  public final Cost_levelContext cost_level() throws RecognitionException {
+  public final @NotNull Cost_levelContext cost_level() throws RecognitionException {
     Cost_levelContext _localctx = new Cost_levelContext(_ctx, getState());
     enterRule(_localctx, 4, RULE_cost_level);
     try {
@@ -328,7 +329,7 @@ public class DLVParser extends Parser {
     return _localctx;
   }
 
-  public final ModelContext model() throws RecognitionException {
+  public final @NotNull ModelContext model() throws RecognitionException {
     ModelContext _localctx = new ModelContext(_ctx, getState());
     enterRule(_localctx, 6, RULE_model);
     int _la;
@@ -376,7 +377,7 @@ public class DLVParser extends Parser {
     return _localctx;
   }
 
-  public final OutputContext output() throws RecognitionException {
+  public final @NotNull OutputContext output() throws RecognitionException {
     OutputContext _localctx = new OutputContext(_ctx, getState());
     enterRule(_localctx, 8, RULE_output);
     int _la;
@@ -408,7 +409,7 @@ public class DLVParser extends Parser {
     return _localctx;
   }
 
-  public final PredicateContext predicate() throws RecognitionException {
+  public final @NotNull PredicateContext predicate() throws RecognitionException {
     PredicateContext _localctx = new PredicateContext(_ctx, getState());
     enterRule(_localctx, 10, RULE_predicate);
     int _la;
@@ -458,7 +459,7 @@ public class DLVParser extends Parser {
     return _localctx;
   }
 
-  public final TermContext term() throws RecognitionException {
+  public final @NotNull TermContext term() throws RecognitionException {
     TermContext _localctx = new TermContext(_ctx, getState());
     enterRule(_localctx, 12, RULE_term);
     int _la;
@@ -540,7 +541,7 @@ public class DLVParser extends Parser {
     return _localctx;
   }
 
-  public final WitnessContext witness() throws RecognitionException {
+  public final @NotNull WitnessContext witness() throws RecognitionException {
     WitnessContext _localctx = new WitnessContext(_ctx, getState());
     enterRule(_localctx, 14, RULE_witness);
     try {

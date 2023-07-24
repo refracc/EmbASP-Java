@@ -3,6 +3,7 @@ package it.unical.mat.parsers.asp.dlv;
 import it.unical.mat.parsers.asp.ASPDataCollection;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.atn.PredictionMode;
+import org.jetbrains.annotations.NotNull;
 
 public class DLVParserBaseVisitorImplementation extends DLVParserBaseVisitor<Void> {
   private final ASPDataCollection answerSets;
@@ -61,14 +62,14 @@ public class DLVParserBaseVisitorImplementation extends DLVParserBaseVisitor<Voi
   }
 
   @Override
-  public Void visitCost_level(DLVParser.Cost_levelContext ctx) {
+  public Void visitCost_level(DLVParser.@NotNull Cost_levelContext ctx) {
     answerSets.storeCost(Integer.parseInt(ctx.INTEGER_CONSTANT(1).getText()), Integer.parseInt(ctx.INTEGER_CONSTANT(0).getText()));
 
     return null;
   }
 
   @Override
-  public Void visitPredicate(DLVParser.PredicateContext ctx) {
+  public Void visitPredicate(DLVParser.@NotNull PredicateContext ctx) {
     answerSets.storeAtom(ctx.getText());
 
     return null;

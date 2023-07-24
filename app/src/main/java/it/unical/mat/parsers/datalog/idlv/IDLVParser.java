@@ -8,6 +8,8 @@ import org.antlr.v4.runtime.atn.PredictionContextCache;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 import org.antlr.v4.runtime.tree.TerminalNode;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -74,19 +76,22 @@ public class IDLVParser extends Parser {
     _interp = new ParserATNSimulator(this, _ATN, _decisionToDFA, _sharedContextCache);
   }
 
-  private static String[] makeRuleNames() {
+  @Contract(value = " -> new", pure = true)
+  private static String @NotNull [] makeRuleNames() {
     return new String[]{
         "output", "minimal_model", "predicate_atom", "term"
     };
   }
 
-  private static String[] makeLiteralNames() {
+  @Contract(value = " -> new", pure = true)
+  private static String @NotNull [] makeLiteralNames() {
     return new String[]{
         null, null, "','", null, "'.'", null, null, "'('", "')'"
     };
   }
 
-  private static String[] makeSymbolicNames() {
+  @Contract(value = " -> new", pure = true)
+  private static String @NotNull [] makeSymbolicNames() {
     return new String[]{
         null, "IGNORE", "COMMA", "INTEGER_CONSTANT", "ATOM_END", "IDENTIFIER",
         "STRING_CONSTANT", "TERMS_BEGIN", "TERMS_END"
@@ -125,7 +130,7 @@ public class IDLVParser extends Parser {
     return _ATN;
   }
 
-  public final OutputContext output() throws RecognitionException {
+  public final @NotNull OutputContext output() throws RecognitionException {
     OutputContext _localctx = new OutputContext(_ctx, getState());
     enterRule(_localctx, 0, RULE_output);
     try {
@@ -144,7 +149,7 @@ public class IDLVParser extends Parser {
     return _localctx;
   }
 
-  public final Minimal_modelContext minimal_model() throws RecognitionException {
+  public final @NotNull Minimal_modelContext minimal_model() throws RecognitionException {
     Minimal_modelContext _localctx = new Minimal_modelContext(_ctx, getState());
     enterRule(_localctx, 2, RULE_minimal_model);
     int _la;
@@ -178,7 +183,7 @@ public class IDLVParser extends Parser {
     return _localctx;
   }
 
-  public final Predicate_atomContext predicate_atom() throws RecognitionException {
+  public final @NotNull Predicate_atomContext predicate_atom() throws RecognitionException {
     Predicate_atomContext _localctx = new Predicate_atomContext(_ctx, getState());
     enterRule(_localctx, 4, RULE_predicate_atom);
     int _la;
@@ -228,7 +233,7 @@ public class IDLVParser extends Parser {
     return _localctx;
   }
 
-  public final TermContext term() throws RecognitionException {
+  public final @NotNull TermContext term() throws RecognitionException {
     TermContext _localctx = new TermContext(_ctx, getState());
     enterRule(_localctx, 6, RULE_term);
     int _la;

@@ -3,6 +3,7 @@ package it.unical.mat.parsers.asp.clingo;
 import it.unical.mat.parsers.asp.ASPDataCollection;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.atn.PredictionMode;
+import org.jetbrains.annotations.NotNull;
 
 public class ClingoParserBaseVisitorImplementation extends ClingoParserBaseVisitor<Void> {
   private final ASPDataCollection answerSets;
@@ -47,7 +48,7 @@ public class ClingoParserBaseVisitorImplementation extends ClingoParserBaseVisit
   }
 
   @Override
-  public Void visitModel(ClingoParser.ModelContext ctx) {
+  public Void visitModel(ClingoParser.@NotNull ModelContext ctx) {
     final String cost = ctx.NEW_LINE().getText().trim();
 
     if (cost.length() > 1) {
@@ -62,7 +63,7 @@ public class ClingoParserBaseVisitorImplementation extends ClingoParserBaseVisit
   }
 
   @Override
-  public Void visitPredicate_atom(ClingoParser.Predicate_atomContext ctx) {
+  public Void visitPredicate_atom(ClingoParser.@NotNull Predicate_atomContext ctx) {
     answerSets.storeAtom(ctx.getText());
 
     return null;

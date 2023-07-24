@@ -3,6 +3,7 @@ package it.unical.mat.embasp.languages.pddl;
 import it.unical.mat.embasp.languages.Mapper;
 import it.unical.mat.embasp.languages.asp.IllegalTermException;
 import it.unical.mat.parsers.pddl.PDDLParser;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 
@@ -26,7 +27,7 @@ public class PDDLMapper extends Mapper {
   }
 
   @Override
-  protected String getId(final String action) {
+  protected String getId(final @NotNull String action) {
     final int openBracketIndex = action.indexOf("(");
 
     if (openBracketIndex != 0)

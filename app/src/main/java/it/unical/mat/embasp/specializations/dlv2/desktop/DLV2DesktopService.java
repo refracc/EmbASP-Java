@@ -6,11 +6,12 @@ import it.unical.mat.embasp.base.OptionDescriptor;
 import it.unical.mat.embasp.base.Output;
 import it.unical.mat.embasp.platforms.desktop.DesktopService;
 import it.unical.mat.embasp.specializations.dlv2.DLV2AnswerSets;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 /**
- * is an extention of {@link DesktopService} for DLV2 solver
+ * is an extension of {@link DesktopService} for DLV2 solver
  */
 
 public class DLV2DesktopService extends DesktopService {
@@ -29,7 +30,7 @@ public class DLV2DesktopService extends DesktopService {
   }
 
   @Override
-  public Output startSync(final List<InputProgram> programs, final List<OptionDescriptor> options) {
+  public Output startSync(final List<InputProgram> programs, final @NotNull List<OptionDescriptor> options) {
     return super.startSync(programs, options);
   }
 }

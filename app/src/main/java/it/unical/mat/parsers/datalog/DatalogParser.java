@@ -5,6 +5,7 @@ import it.unical.mat.parsers.datalog.datalog_parser_base.DatalogGrammarLexer;
 import it.unical.mat.parsers.datalog.datalog_parser_base.DatalogGrammarParser;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.atn.PredictionMode;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -12,7 +13,7 @@ public class DatalogParser extends DatalogGrammarBaseVisitor<Void> {
 
   private static final ArrayList<String> termList = new ArrayList<>();
 
-  public static String[] parseParametersFromAtom(final String atom) {
+  public static String @NotNull [] parseParametersFromAtom(final String atom) {
     termList.clear();
     final CommonTokenStream tokens = new CommonTokenStream(new DatalogGrammarLexer(CharStreams.fromString(atom)));
     final DatalogGrammarParser parser = new DatalogGrammarParser(tokens);
@@ -38,7 +39,7 @@ public class DatalogParser extends DatalogGrammarBaseVisitor<Void> {
   }
 
   @Override
-  public Void visitTerm(DatalogGrammarParser.TermContext ctx) {
+  public Void visitTerm(DatalogGrammarParser.@NotNull TermContext ctx) {
     termList.add(ctx.getText());
     return null;
   }

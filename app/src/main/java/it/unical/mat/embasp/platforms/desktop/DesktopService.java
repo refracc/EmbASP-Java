@@ -7,6 +7,7 @@
 package it.unical.mat.embasp.platforms.desktop;
 
 import it.unical.mat.embasp.base.*;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
 import java.util.List;
@@ -61,7 +62,7 @@ public abstract class DesktopService implements Service {
    * @see it.unical.mat.embasp.base.Service#startSync(List, List)
    */
   @Override
-  public Output startSync(final List<InputProgram> programs, final List<OptionDescriptor> options) {
+  public Output startSync(final List<InputProgram> programs, final @NotNull List<OptionDescriptor> options) {
 
     StringBuilder option = new StringBuilder();
     for (final OptionDescriptor o : options)

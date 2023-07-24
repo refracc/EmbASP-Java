@@ -8,6 +8,7 @@ import org.antlr.v4.runtime.atn.PredictionContextCache;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 import org.antlr.v4.runtime.tree.TerminalNode;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -118,7 +119,7 @@ public class ClingoParser extends Parser {
     return _ATN;
   }
 
-  public final Answer_setContext answer_set() throws RecognitionException {
+  public final @NotNull Answer_setContext answer_set() throws RecognitionException {
     Answer_setContext _localctx = new Answer_setContext(_ctx, getState());
     enterRule(_localctx, 0, RULE_answer_set);
     try {
@@ -139,7 +140,7 @@ public class ClingoParser extends Parser {
     return _localctx;
   }
 
-  public final ModelContext model() throws RecognitionException {
+  public final @NotNull ModelContext model() throws RecognitionException {
     ModelContext _localctx = new ModelContext(_ctx, getState());
     enterRule(_localctx, 2, RULE_model);
     int _la;
@@ -173,7 +174,7 @@ public class ClingoParser extends Parser {
     return _localctx;
   }
 
-  public final OutputContext output() throws RecognitionException {
+  public final @NotNull OutputContext output() throws RecognitionException {
     OutputContext _localctx = new OutputContext(_ctx, getState());
     enterRule(_localctx, 4, RULE_output);
     int _la;
@@ -205,7 +206,7 @@ public class ClingoParser extends Parser {
     return _localctx;
   }
 
-  public final Predicate_atomContext predicate_atom() throws RecognitionException {
+  public final @NotNull Predicate_atomContext predicate_atom() throws RecognitionException {
     Predicate_atomContext _localctx = new Predicate_atomContext(_ctx, getState());
     enterRule(_localctx, 6, RULE_predicate_atom);
     int _la;
@@ -255,7 +256,7 @@ public class ClingoParser extends Parser {
     return _localctx;
   }
 
-  public final TermContext term() throws RecognitionException {
+  public final @NotNull TermContext term() throws RecognitionException {
     TermContext _localctx = new TermContext(_ctx, getState());
     enterRule(_localctx, 8, RULE_term);
     try {

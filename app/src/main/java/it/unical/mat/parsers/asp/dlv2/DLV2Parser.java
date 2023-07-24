@@ -9,6 +9,8 @@ import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 import org.antlr.v4.runtime.tree.TerminalNode;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -86,20 +88,23 @@ public class DLV2Parser extends Parser {
     _interp = new ParserATNSimulator(this, _ATN, _decisionToDFA, _sharedContextCache);
   }
 
-  private static String[] makeRuleNames() {
+  @Contract(value = " -> new", pure = true)
+  private static String @NotNull [] makeRuleNames() {
     return new String[]{
         "answer_set", "cost", "level", "model", "output", "predicate_atom", "term"
     };
   }
 
-  private static String[] makeLiteralNames() {
+  @Contract(value = " -> new", pure = true)
+  private static String @NotNull [] makeLiteralNames() {
     return new String[]{
         null, "'{'", null, null, null, "'@'", null, null, null, "','", null,
         null, "'}'", null, "'('", "')'"
     };
   }
 
-  private static String[] makeSymbolicNames() {
+  @Contract(value = " -> new", pure = true)
+  private static String @NotNull [] makeSymbolicNames() {
     return new String[]{
         null, "START", "COST_LABEL", "ANY", "IGNORE", "AT", "INTEGER", "NEW_LINE",
         "BLANK_SPACE", "COMMA", "INTEGER_CONSTANT", "IDENTIFIER", "MODEL_END",
@@ -139,7 +144,7 @@ public class DLV2Parser extends Parser {
     return _ATN;
   }
 
-  public final Answer_setContext answer_set() throws RecognitionException {
+  public final @NotNull Answer_setContext answer_set() throws RecognitionException {
     Answer_setContext _localctx = new Answer_setContext(_ctx, getState());
     enterRule(_localctx, 0, RULE_answer_set);
     int _la;
@@ -171,7 +176,7 @@ public class DLV2Parser extends Parser {
     return _localctx;
   }
 
-  public final CostContext cost() throws RecognitionException {
+  public final @NotNull CostContext cost() throws RecognitionException {
     CostContext _localctx = new CostContext(_ctx, getState());
     enterRule(_localctx, 2, RULE_cost);
     int _la;
@@ -207,7 +212,7 @@ public class DLV2Parser extends Parser {
     return _localctx;
   }
 
-  public final LevelContext level() throws RecognitionException {
+  public final @NotNull LevelContext level() throws RecognitionException {
     LevelContext _localctx = new LevelContext(_ctx, getState());
     enterRule(_localctx, 4, RULE_level);
     try {
@@ -230,7 +235,7 @@ public class DLV2Parser extends Parser {
     return _localctx;
   }
 
-  public final ModelContext model() throws RecognitionException {
+  public final @NotNull ModelContext model() throws RecognitionException {
     ModelContext _localctx = new ModelContext(_ctx, getState());
     enterRule(_localctx, 6, RULE_model);
     int _la;
@@ -276,7 +281,7 @@ public class DLV2Parser extends Parser {
     return _localctx;
   }
 
-  public final OutputContext output() throws RecognitionException {
+  public final @NotNull OutputContext output() throws RecognitionException {
     OutputContext _localctx = new OutputContext(_ctx, getState());
     enterRule(_localctx, 8, RULE_output);
     int _la;
@@ -308,7 +313,7 @@ public class DLV2Parser extends Parser {
     return _localctx;
   }
 
-  public final Predicate_atomContext predicate_atom() throws RecognitionException {
+  public final @NotNull Predicate_atomContext predicate_atom() throws RecognitionException {
     Predicate_atomContext _localctx = new Predicate_atomContext(_ctx, getState());
     enterRule(_localctx, 10, RULE_predicate_atom);
     int _la;
@@ -358,7 +363,7 @@ public class DLV2Parser extends Parser {
     return _localctx;
   }
 
-  public final TermContext term() throws RecognitionException {
+  public final @NotNull TermContext term() throws RecognitionException {
     TermContext _localctx = new TermContext(_ctx, getState());
     enterRule(_localctx, 12, RULE_term);
     try {

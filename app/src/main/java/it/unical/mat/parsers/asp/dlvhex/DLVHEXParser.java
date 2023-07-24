@@ -8,6 +8,7 @@ import org.antlr.v4.runtime.atn.PredictionContextCache;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 import org.antlr.v4.runtime.tree.TerminalNode;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -211,7 +212,7 @@ public class DLVHEXParser extends Parser {
     return _localctx;
   }
 
-  public final AtomsContext atoms() throws RecognitionException {
+  public final @NotNull AtomsContext atoms() throws RecognitionException {
     AtomsContext _localctx = new AtomsContext(_ctx, getState());
     enterRule(_localctx, 2, RULE_atoms);
     int _la;
@@ -269,7 +270,7 @@ public class DLVHEXParser extends Parser {
     return _localctx;
   }
 
-  public final CostContext cost() throws RecognitionException {
+  public final @NotNull CostContext cost() throws RecognitionException {
     CostContext _localctx = new CostContext(_ctx, getState());
     enterRule(_localctx, 4, RULE_cost);
     int _la;
@@ -309,7 +310,7 @@ public class DLVHEXParser extends Parser {
     return _localctx;
   }
 
-  public final LevelContext level() throws RecognitionException {
+  public final @NotNull LevelContext level() throws RecognitionException {
     LevelContext _localctx = new LevelContext(_ctx, getState());
     enterRule(_localctx, 6, RULE_level);
     try {
@@ -336,7 +337,7 @@ public class DLVHEXParser extends Parser {
     return _localctx;
   }
 
-  public final OutputContext output() throws RecognitionException {
+  public final @NotNull OutputContext output() throws RecognitionException {
     OutputContext _localctx = new OutputContext(_ctx, getState());
     enterRule(_localctx, 8, RULE_output);
     int _la;
@@ -368,7 +369,7 @@ public class DLVHEXParser extends Parser {
     return _localctx;
   }
 
-  public final Predicate_atomContext predicate_atom() throws RecognitionException {
+  public final @NotNull Predicate_atomContext predicate_atom() throws RecognitionException {
     Predicate_atomContext _localctx = new Predicate_atomContext(_ctx, getState());
     enterRule(_localctx, 10, RULE_predicate_atom);
     int _la;
@@ -418,7 +419,7 @@ public class DLVHEXParser extends Parser {
     return _localctx;
   }
 
-  public final TermContext term() throws RecognitionException {
+  public final @NotNull TermContext term() throws RecognitionException {
     TermContext _localctx = new TermContext(_ctx, getState());
     enterRule(_localctx, 12, RULE_term);
     try {
@@ -464,7 +465,7 @@ public class DLVHEXParser extends Parser {
     return _localctx;
   }
 
-  public final WitnessContext witness() throws RecognitionException {
+  public final @NotNull WitnessContext witness() throws RecognitionException {
     WitnessContext _localctx = new WitnessContext(_ctx, getState());
     enterRule(_localctx, 14, RULE_witness);
     try {

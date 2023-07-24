@@ -10,6 +10,7 @@ import org.antlr.v4.runtime.atn.PredictionContextCache;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 import org.antlr.v4.runtime.tree.TerminalNode;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -119,7 +120,7 @@ public class ASPGrammarParser extends Parser {
     return _ATN;
   }
 
-  public final OutputContext output() throws RecognitionException {
+  public final @NotNull OutputContext output() throws RecognitionException {
     OutputContext _localctx = new OutputContext(_ctx, getState());
     enterRule(_localctx, 0, RULE_output);
     int _la;
@@ -151,7 +152,7 @@ public class ASPGrammarParser extends Parser {
     return _localctx;
   }
 
-  public final Predicate_atomContext predicate_atom() throws RecognitionException {
+  public final @NotNull Predicate_atomContext predicate_atom() throws RecognitionException {
     Predicate_atomContext _localctx = new Predicate_atomContext(_ctx, getState());
     enterRule(_localctx, 2, RULE_predicate_atom);
     int _la;
@@ -201,7 +202,7 @@ public class ASPGrammarParser extends Parser {
     return _localctx;
   }
 
-  public final TermContext term() throws RecognitionException {
+  public final @NotNull TermContext term() throws RecognitionException {
     TermContext _localctx = new TermContext(_ctx, getState());
     enterRule(_localctx, 4, RULE_term);
     int _la;

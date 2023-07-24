@@ -3,6 +3,7 @@ package it.unical.mat.parsers.pddl.solver_planning_domains;
 import it.unical.mat.parsers.pddl.PDDLDataCollection;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.atn.PredictionMode;
+import org.jetbrains.annotations.NotNull;
 
 public class SPDGrammarBaseVisitorImplementation extends SPDGrammarBaseVisitor<Void> {
   private static final int OK_STATUS = 1;
@@ -15,7 +16,7 @@ public class SPDGrammarBaseVisitorImplementation extends SPDGrammarBaseVisitor<V
     this.actions = actions;
   }
 
-  private static String trim(final String string) {
+  private static @NotNull String trim(final @NotNull String string) {
     final int stringLength = string.length();
 
     return (string.charAt(0) == '"' && string.charAt(stringLength - 1) == '"') ? string.substring(1, stringLength - 1) : string;
@@ -52,7 +53,7 @@ public class SPDGrammarBaseVisitorImplementation extends SPDGrammarBaseVisitor<V
   }
 
   @Override
-  public Void visitPair(SPDGrammarParser.PairContext ctx) {
+  public Void visitPair(SPDGrammarParser.@NotNull PairContext ctx) {
     final SPDGrammarParser.ValueContext valueContext = ctx.value();
     final String string = ctx.STRING().getText();
 

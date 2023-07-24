@@ -6,6 +6,8 @@ import org.antlr.v4.runtime.atn.ATNDeserializer;
 import org.antlr.v4.runtime.atn.LexerATNSimulator;
 import org.antlr.v4.runtime.atn.PredictionContextCache;
 import org.antlr.v4.runtime.dfa.DFA;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class DatalogGrammarLexer extends Lexer {
@@ -79,19 +81,22 @@ public class DatalogGrammarLexer extends Lexer {
     _interp = new LexerATNSimulator(this, _ATN, _decisionToDFA, _sharedContextCache);
   }
 
-  private static String[] makeRuleNames() {
+  @Contract(value = " -> new", pure = true)
+  private static String @NotNull [] makeRuleNames() {
     return new String[]{
         "T__0", "T__1", "T__2", "IDENTIFIER", "INTEGER", "STRING", "WHITESPACE"
     };
   }
 
-  private static String[] makeLiteralNames() {
+  @Contract(value = " -> new", pure = true)
+  private static String @NotNull [] makeLiteralNames() {
     return new String[]{
         null, "'('", "','", "')'"
     };
   }
 
-  private static String[] makeSymbolicNames() {
+  @Contract(value = " -> new", pure = true)
+  private static String @NotNull [] makeSymbolicNames() {
     return new String[]{
         null, null, null, null, "IDENTIFIER", "INTEGER", "STRING", "WHITESPACE"
     };

@@ -3,6 +3,7 @@ package it.unical.mat.embasp.specializations.solver_planning_domains;
 import it.unical.mat.embasp.base.InputProgram;
 import it.unical.mat.embasp.languages.pddl.PDDLException;
 import it.unical.mat.embasp.languages.pddl.PDDLInputProgram;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,91 +16,72 @@ import java.util.List;
 
 public abstract class SPDUtility {
 
-  private final String solverUrl = "http://solver.planning.domains/solve";
-
   public SPDUtility() {
   }
 
-  private static final String escape(final String escapable) {
+  private static @NotNull String escape(final @NotNull String escapable) {
     final StringBuilder builder = new StringBuilder();
 
     for (int i = 0; i < escapable.length(); i++) {
       final char character = escapable.charAt(i);
 
       switch (character) {
-        case '"':
-          builder.append("\\\"");
-          break;
-        case '\\':
-          builder.append("\\\\");
-          break;
-        case '\b':
-          builder.append("\\b");
-          break;
-        case '\f':
-          builder.append("\\f");
-          break;
-        case '\n':
-          builder.append("\\n");
-          break;
-        case '\r':
-          builder.append("\\r");
-          break;
-        case '\t':
-          builder.append("\\t");
-          break;
-        case '/':
-          builder.append("\\/");
-          break;
-        default:
-          if (((character >= '\u0000') && (character <= '\u001F')) || ((character >= '\u007F') && (character <= '\u009F')) || ((character >= '\u2000') && (character <= '\u20FF'))) {
+        case '"' -> builder.append("\\\"");
+        case '\\' -> builder.append("\\\\");
+        case '\b' -> builder.append("\\b");
+        case '\f' -> builder.append("\\f");
+        case '\n' -> builder.append("\\n");
+        case '\r' -> builder.append("\\r");
+        case '\t' -> builder.append("\\t");
+        case '/' -> builder.append("\\/");
+        default -> {
+          if (character <= '\u001F' || character >= '\u007F' && character <= '\u009F' || character >= '\u2000' && character <= '\u20FF') {
             final String characterHexCode = Integer.toHexString(character);
 
             builder.append("\\u");
 
-            for (int k = 0; k < (4 - characterHexCode.length()); k++)
-              builder.append("0");
+            builder.append("0".repeat(4 - characterHexCode.length()));
 
             builder.append(characterHexCode.toUpperCase());
           } else
             builder.append(character);
+        }
       }
     }
 
     return builder.toString();
   }
 
-  public String createJson(final List<InputProgram> pddlInputProgram) throws PDDLException {
+  public String createJson(final @NotNull List<InputProgram> pddlInputProgram) throws PDDLException {
 
-    String problem = "";
-    String domain = "";
+    StringBuilder problem = new StringBuilder();
+    StringBuilder domain = new StringBuilder();
 
     for (final InputProgram ip : pddlInputProgram) {
       if (!(ip instanceof PDDLInputProgram pip))
         continue;
       switch (pip.getProgramsType()) {
-        case DOMAIN:
-          domain += pip.getPrograms() + pip.getSeparator();
-          domain += getFromFile(pip.getFilesPaths(), pip.getSeparator());
-          break;
-        case PROBLEM:
-          problem += pip.getPrograms() + pip.getSeparator();
-          problem += getFromFile(pip.getFilesPaths(), pip.getSeparator());
-          break;
-        default:
-          throw new PDDLException("Program type : " + pip.getProgramsType() + " not valid.");
+        case DOMAIN -> {
+          domain.append(pip.getPrograms()).append(pip.getSeparator());
+          domain.append(getFromFile(pip.getFilesPaths(), pip.getSeparator()));
+        }
+        case PROBLEM -> {
+          problem.append(pip.getPrograms()).append(pip.getSeparator());
+          problem.append(getFromFile(pip.getFilesPaths(), pip.getSeparator()));
+        }
+        default -> throw new PDDLException("Program type : " + pip.getProgramsType() + " not valid.");
       }
     }
 
-    if (problem.equals(""))
+    if (problem.toString().equals(""))
       throw new PDDLException("Problem file not specified");
-    if (domain.equals(""))
+    if (domain.toString().equals(""))
       throw new PDDLException("Domain file not specified");
 
-    return "{\"problem\":\"" + escape(problem) + "\", \"domain\":\"" + escape(domain) + "\"}";
+    return "{\"problem\":\"" + escape(problem.toString()) + "\", \"domain\":\"" + escape(domain.toString()) + "\"}";
   }
 
-  private String getFromFile(final List<String> filesPaths, final String separator) {
+  private @NotNull String getFromFile(final @NotNull List<String> filesPaths, final String separator) {
     final StringBuilder toReturn = new StringBuilder();
     for (final String s : filesPaths)
       try {
@@ -112,9 +94,9 @@ public abstract class SPDUtility {
 
   public String postJsonToURL(final String json) throws PDDLException {
 
-    String result = "";
+    String result;
     try {
-      final URL myurl = new URL(solverUrl);
+      final URL myurl = new URL("https://solver.planning.domains/solve");
       final HttpURLConnection con = (HttpURLConnection) myurl.openConnection();
       con.setDoOutput(true);
       con.setDoInput(true);
@@ -131,9 +113,9 @@ public abstract class SPDUtility {
       final int HttpResult = con.getResponseCode();
       if (HttpResult == HttpURLConnection.HTTP_OK) {
         final BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(), StandardCharsets.UTF_8));
-        String line = null;
+        String line;
         while ((line = br.readLine()) != null)
-          sb.append(line + "\n");
+          sb.append(line).append("\n");
         br.close();
         result = sb.toString();
       } else

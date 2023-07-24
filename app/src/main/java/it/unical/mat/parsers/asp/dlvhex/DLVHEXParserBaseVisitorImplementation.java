@@ -3,6 +3,7 @@ package it.unical.mat.parsers.asp.dlvhex;
 import it.unical.mat.parsers.asp.ASPDataCollection;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.atn.PredictionMode;
+import org.jetbrains.annotations.NotNull;
 
 public class DLVHEXParserBaseVisitorImplementation extends DLVHEXParserBaseVisitor<Void> {
   private final ASPDataCollection answerSets;
@@ -46,14 +47,14 @@ public class DLVHEXParserBaseVisitorImplementation extends DLVHEXParserBaseVisit
   }
 
   @Override
-  public Void visitLevel(DLVHEXParser.LevelContext ctx) {
+  public Void visitLevel(DLVHEXParser.@NotNull LevelContext ctx) {
     answerSets.storeCost(Integer.parseInt(ctx.INTEGER(1).getText()), Integer.parseInt(ctx.INTEGER(0).getText()));
 
     return null;
   }
 
   @Override
-  public Void visitPredicate_atom(DLVHEXParser.Predicate_atomContext ctx) {
+  public Void visitPredicate_atom(DLVHEXParser.@NotNull Predicate_atomContext ctx) {
     answerSets.storeAtom(ctx.getText());
 
     return null;

@@ -1,8 +1,8 @@
 package it.unical.mat.embasp.languages;
 
+import it.unical.mat.embasp.base.InputProgram;
 import it.unical.mat.embasp.languages.asp.IllegalTermException;
 import it.unical.mat.embasp.languages.asp.SymbolicConstant;
-import it.unical.mat.embasp.base.InputProgram;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;

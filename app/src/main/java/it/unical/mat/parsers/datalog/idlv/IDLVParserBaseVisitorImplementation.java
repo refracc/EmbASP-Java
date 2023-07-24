@@ -5,6 +5,7 @@ import it.unical.mat.embasp.languages.datalog.MinimalModel;
 import it.unical.mat.parsers.datalog.DatalogDataCollection;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.atn.PredictionMode;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
 
@@ -47,7 +48,7 @@ public class IDLVParserBaseVisitorImplementation extends IDLVParserBaseVisitor<V
   }
 
   @Override
-  public Void visitPredicate_atom(IDLVParser.Predicate_atomContext ctx) {
+  public Void visitPredicate_atom(IDLVParser.@NotNull Predicate_atomContext ctx) {
     modelCurrentlyBeingVisited.getAtomsAsStringList().add(ctx.getText());
     return null;
   }

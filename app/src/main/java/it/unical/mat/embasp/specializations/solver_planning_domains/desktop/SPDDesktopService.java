@@ -6,6 +6,7 @@ import it.unical.mat.embasp.base.Output;
 import it.unical.mat.embasp.platforms.desktop.DesktopService;
 import it.unical.mat.embasp.specializations.solver_planning_domains.SPDPlan;
 import it.unical.mat.embasp.specializations.solver_planning_domains.SPDUtility;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -22,10 +23,8 @@ public class SPDDesktopService extends DesktopService {
       @Override
       protected String readFile(final String s) throws IOException {
 
-        String everything = "";
-        BufferedReader br = null;
-        try {
-          br = new BufferedReader(new FileReader(s));
+        String everything;
+        try (BufferedReader br = new BufferedReader(new FileReader(s))) {
           final StringBuilder sb = new StringBuilder();
           String line = br.readLine();
 
@@ -35,9 +34,6 @@ public class SPDDesktopService extends DesktopService {
             line = br.readLine();
           }
           everything = sb.toString();
-        } finally {
-          if (br != null)
-            br.close();
         }
         return everything;
       }
@@ -50,7 +46,7 @@ public class SPDDesktopService extends DesktopService {
   }
 
   @Override
-  public Output startSync(final List<InputProgram> programs, final List<OptionDescriptor> options) {
+  public Output startSync(final @NotNull List<InputProgram> programs, final @NotNull List<OptionDescriptor> options) {
 
     if (programs.isEmpty())
       return getOutput("", "PDDLInputProgram not defined");

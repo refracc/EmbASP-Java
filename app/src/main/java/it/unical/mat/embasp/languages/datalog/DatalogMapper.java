@@ -27,7 +27,7 @@ public class DatalogMapper extends Mapper {
   }
 
   @Override
-  protected String getActualString(final String predicate, final HashMap<Integer, Object> parametersMap) throws IllegalTermException {
+  protected String getActualString(final String predicate, final @NotNull HashMap<Integer, Object> parametersMap) throws IllegalTermException {
     if (parametersMap.isEmpty())
       return predicate;
 

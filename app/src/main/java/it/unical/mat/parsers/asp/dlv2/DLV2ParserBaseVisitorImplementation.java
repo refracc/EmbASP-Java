@@ -3,6 +3,7 @@ package it.unical.mat.parsers.asp.dlv2;
 import it.unical.mat.parsers.asp.ASPDataCollection;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.atn.PredictionMode;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 
@@ -43,7 +44,7 @@ public class DLV2ParserBaseVisitorImplementation extends DLV2ParserBaseVisitor<V
   }
 
   @Override
-  public Void visitAnswer_set(DLV2Parser.Answer_setContext ctx) {
+  public Void visitAnswer_set(DLV2Parser.@NotNull Answer_setContext ctx) {
     answerSets.addAnswerSet();
 
     if (ctx.cost() != null && !ctx.cost().isEmpty()) {
@@ -60,7 +61,7 @@ public class DLV2ParserBaseVisitorImplementation extends DLV2ParserBaseVisitor<V
   }
 
   @Override
-  public Void visitLevel(DLV2Parser.LevelContext ctx) {
+  public Void visitLevel(DLV2Parser.@NotNull LevelContext ctx) {
     final int level = Integer.parseInt(ctx.INTEGER(1).getText()), cost = Integer.parseInt(ctx.INTEGER(0).getText());
 
     costs.put(level, cost);
@@ -70,7 +71,7 @@ public class DLV2ParserBaseVisitorImplementation extends DLV2ParserBaseVisitor<V
   }
 
   @Override
-  public Void visitPredicate_atom(DLV2Parser.Predicate_atomContext ctx) {
+  public Void visitPredicate_atom(DLV2Parser.@NotNull Predicate_atomContext ctx) {
     answerSets.storeAtom(ctx.getText());
 
     return null;

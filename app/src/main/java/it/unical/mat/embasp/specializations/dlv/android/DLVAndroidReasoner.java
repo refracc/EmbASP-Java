@@ -24,6 +24,7 @@ public class DLVAndroidReasoner extends IntentService {
   static {
     System.loadLibrary("dlvJNI");
   }
+
   public DLVAndroidReasoner() {
     super("dlv_service");
   }

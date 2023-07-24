@@ -6,6 +6,8 @@ import org.antlr.v4.runtime.atn.ATNDeserializer;
 import org.antlr.v4.runtime.atn.LexerATNSimulator;
 import org.antlr.v4.runtime.atn.PredictionContextCache;
 import org.antlr.v4.runtime.dfa.DFA;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class IDLVLexer extends Lexer {
@@ -84,20 +86,23 @@ public class IDLVLexer extends Lexer {
     _interp = new LexerATNSimulator(this, _ATN, _decisionToDFA, _sharedContextCache);
   }
 
-  private static String[] makeRuleNames() {
+  @Contract(value = " -> new", pure = true)
+  private static String @NotNull [] makeRuleNames() {
     return new String[]{
         "IGNORE", "COMMA", "INTEGER_CONSTANT", "ATOM_END", "IDENTIFIER", "STRING_CONSTANT",
         "TERMS_BEGIN", "TERMS_END", "INT", "NL", "WS"
     };
   }
 
-  private static String[] makeLiteralNames() {
+  @Contract(value = " -> new", pure = true)
+  private static String @NotNull [] makeLiteralNames() {
     return new String[]{
         null, null, "','", null, "'.'", null, null, "'('", "')'"
     };
   }
 
-  private static String[] makeSymbolicNames() {
+  @Contract(value = " -> new", pure = true)
+  private static String @NotNull [] makeSymbolicNames() {
     return new String[]{
         null, "IGNORE", "COMMA", "INTEGER_CONSTANT", "ATOM_END", "IDENTIFIER",
         "STRING_CONSTANT", "TERMS_BEGIN", "TERMS_END"
