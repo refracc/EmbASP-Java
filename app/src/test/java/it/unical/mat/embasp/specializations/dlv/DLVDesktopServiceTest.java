@@ -3,17 +3,6 @@
  */
 package it.unical.mat.embasp.specializations.dlv;
 
-import java.io.File;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
-
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
 import it.unical.mat.embasp.base.Handler;
 import it.unical.mat.embasp.base.InputProgram;
 import it.unical.mat.embasp.languages.asp.ASPInputProgram;
@@ -21,134 +10,136 @@ import it.unical.mat.embasp.languages.asp.AnswerSet;
 import it.unical.mat.embasp.languages.asp.AnswerSets;
 import it.unical.mat.embasp.platforms.desktop.DesktopHandler;
 import it.unical.mat.embasp.specializations.dlv.desktop.DLVDesktopService;
+import org.junit.*;
+
+import java.io.File;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 public class DLVDesktopServiceTest {
 
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-	}
+  /**
+   * Countdown latch
+   */
+  private final CountDownLatch lock = new CountDownLatch(1);
+  private final int N = 9;
+  private final int[][] sudokuMatrix = {{1, 0, 0, 0, 0, 7, 0, 9, 0}, {0, 3, 0, 0, 2, 0, 0, 0, 8}, {0, 0, 9, 6, 0, 0, 5, 0, 0},
+      {0, 0, 5, 3, 0, 0, 9, 0, 0}, {0, 1, 0, 0, 8, 0, 0, 0, 2}, {6, 0, 0, 0, 0, 4, 0, 0, 0}, {3, 0, 0, 0, 0, 0, 0, 1, 0},
+      {0, 4, 1, 0, 0, 0, 0, 0, 7}, {0, 0, 7, 0, 0, 0, 3, 0, 0}};
+  private AnswerSets answerSets;
 
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-	}
+  /**
+   * @throws java.lang.Exception
+   */
+  @BeforeClass
+  public static void setUpBeforeClass() throws Exception {
+  }
 
-	/** Countdown latch */
-	private final CountDownLatch lock = new CountDownLatch(1);
+  /**
+   * @throws java.lang.Exception
+   */
+  @AfterClass
+  public static void tearDownAfterClass() throws Exception {
+  }
 
-	private final int N = 9;
+  /**
+   * Taken from https://github.com/DeMaCS-UNICAL/LoIDE
+   *
+   * @return
+   */
+  public String getPath() {
 
-	private final int[][] sudokuMatrix = { { 1, 0, 0, 0, 0, 7, 0, 9, 0 }, { 0, 3, 0, 0, 2, 0, 0, 0, 8 }, { 0, 0, 9, 6, 0, 0, 5, 0, 0 },
-			{ 0, 0, 5, 3, 0, 0, 9, 0, 0 }, { 0, 1, 0, 0, 8, 0, 0, 0, 2 }, { 6, 0, 0, 0, 0, 4, 0, 0, 0 }, { 3, 0, 0, 0, 0, 0, 0, 1, 0 },
-			{ 0, 4, 1, 0, 0, 0, 0, 0, 7 }, { 0, 0, 7, 0, 0, 0, 3, 0, 0 } };
+    final String OS = System.getProperty("os.name").toLowerCase();
+    final StringBuffer path = new StringBuffer();
 
-	private AnswerSets answerSets;
+    path.append(".." + File.separator + ".." + File.separator + "test-resources" + File.separator + "asp" + File.separator + "executables");
+    path.append(File.separator);
+    path.append("dlv");
+    path.append(File.separator);
 
-	/**
-	 * Taken from https://github.com/DeMaCS-UNICAL/LoIDE
-	 *
-	 * @return
-	 */
-	public String getPath() {
+    if (OS.indexOf("win") >= 0)
+      path.append("dlv.mingw.exe");
+    else if (OS.indexOf("mac") >= 0)
+      path.append("dlv.i386-apple-darwin.bin");
+    else if (OS.indexOf("nux") >= 0) {
+      final String arch = System.getProperty("os.arch");
+      if (arch.equals("x86_64"))
+        path.append("dlv.x86-64-linux-elf-static.bin");
+      else
+        path.append("dlv.i386-linux-elf-static.bin");
+    }
 
-		final String OS = System.getProperty("os.name").toLowerCase();
-		final StringBuffer path = new StringBuffer();
+    return path.toString();
 
-		path.append(".." + File.separator + ".." + File.separator + "test-resources" + File.separator + "asp" + File.separator + "executables");
-		path.append(File.separator);
-		path.append("dlv");
-		path.append(File.separator);
+  }
 
-		if (OS.indexOf("win") >= 0)
-			path.append("dlv.mingw.exe");
-		else
-			if (OS.indexOf("mac") >= 0)
-				path.append("dlv.i386-apple-darwin.bin");
-			else
-				if (OS.indexOf("nux") >= 0) {
-					final String arch = System.getProperty("os.arch");
-					if (arch.equals("x86_64"))
-						path.append("dlv.x86-64-linux-elf-static.bin");
-					else
-						path.append("dlv.i386-linux-elf-static.bin");
-				}
+  /**
+   * @throws java.lang.Exception
+   */
+  @Before
+  public void setUp() throws Exception {
+  }
 
-		return path.toString();
+  @Test
+  public void sudokuTest() {
+    try {
 
-	}
+      final Handler handler = new DesktopHandler(new DLVDesktopService(getPath()));
 
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@Before
-	public void setUp() throws Exception {
-	}
+      final InputProgram inputProgram = new ASPInputProgram();
+      for (int i = 0; i < N; i++)
+        for (int j = 0; j < N; j++)
+          if (sudokuMatrix[i][j] != 0)
+            inputProgram.addObjectInput(new Cell(i, j, sudokuMatrix[i][j]));
 
-	@Test
-	public void sudokuTest() {
-		try {
+      inputProgram.addFilesPath(".." + File.separator + ".." + File.separator + "test-resources" + File.separator + "asp" + File.separator + "sudoku");
 
-			final Handler handler = new DesktopHandler(new DLVDesktopService(getPath()));
+      handler.addProgram(inputProgram);
 
-			final InputProgram inputProgram = new ASPInputProgram();
-			for (int i = 0; i < N; i++)
-				for (int j = 0; j < N; j++)
-					if (sudokuMatrix[i][j] != 0)
-						inputProgram.addObjectInput(new Cell(i, j, sudokuMatrix[i][j]));
+      handler.startAsync(o -> {
 
-			inputProgram.addFilesPath(".." + File.separator + ".." + File.separator + "test-resources" + File.separator + "asp" + File.separator + "sudoku");
+        if (!(o instanceof AnswerSets))
+          return;
 
-			handler.addProgram(inputProgram);
+        answerSets = (AnswerSets) o;
 
-			handler.startAsync(o -> {
+        lock.countDown();
 
-				if (!(o instanceof AnswerSets))
-					return;
+      });
 
-				answerSets = (AnswerSets) o;
+      lock.await(50000, TimeUnit.MILLISECONDS);
 
-				lock.countDown();
+      Assert.assertNotNull(answerSets);
 
-			});
+      Assert.assertTrue("Found error in the Plan\n" + answerSets.getErrors(), answerSets.getErrors().isEmpty());
 
-			lock.await(50000, TimeUnit.MILLISECONDS);
+      Assert.assertTrue(answerSets.getAnswerSets().size() != 0);
 
-			Assert.assertNotNull(answerSets);
+      final AnswerSet as = answerSets.getAnswerSets().get(0);
+      for (final Object obj : as.getAtoms()) {
+        final Cell cell = (Cell) obj;
+        sudokuMatrix[cell.getRow()][cell.getColumn()] = cell.getValue();
+      }
 
-			Assert.assertTrue("Found error in the Plan\n" + answerSets.getErrors(), answerSets.getErrors().isEmpty());
+      for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+          System.out.print(sudokuMatrix[i][j] + " ");
+          if (sudokuMatrix[i][j] == 0)
+            Assert.fail("Number not valid");
+        }
+        System.out.println();
+      }
+    } catch (final Exception e) {
+      Assert.fail("Exception " + e.getMessage());
+    }
 
-			Assert.assertTrue(answerSets.getAnswerSets().size() != 0);
-			
-			final AnswerSet as = answerSets.getAnswerSets().get(0);
-			for (final Object obj : as.getAtoms()) {
-				final Cell cell = (Cell) obj;
-				sudokuMatrix[cell.getRow()][cell.getColumn()] = cell.getValue();
-			}
+  }
 
-			for (int i = 0; i < N; i++) {
-				for (int j = 0; j < N; j++) {
-					System.out.print(sudokuMatrix[i][j] + " ");
-					if (sudokuMatrix[i][j] == 0)
-						Assert.fail("Number not valid");
-				}
-				System.out.println();
-			}
-		} catch (final Exception e) {
-			Assert.fail("Exception " + e.getMessage());
-		}
-
-	}
-
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@After
-	public void tearDown() throws Exception {
-	}
+  /**
+   * @throws java.lang.Exception
+   */
+  @After
+  public void tearDown() throws Exception {
+  }
 
 }

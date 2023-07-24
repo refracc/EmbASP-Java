@@ -9,28 +9,27 @@ import it.unical.mat.embasp.languages.Param;
 @Id("pick-up")
 public class PickUp {
 
-	@Param(0)
-	private String block;
+  @Param(0)
+  private String block;
 
-	/**
-	 *
-	 */
-	public PickUp() {
-	}
+  /**
+   *
+   */
+  public PickUp() {
+  }
 
-	/**
-	 * @return the block
-	 */
-	public String getBlock() {
-		return block;
-	}
+  /**
+   * @return the block
+   */
+  public String getBlock() {
+    return block;
+  }
 
-	/**
-	 * @param block
-	 *            the block to set
-	 */
-	public void setBlock(final String block) {
-		this.block = block;
-	}
+  /**
+   * @param block the block to set
+   */
+  public void setBlock(final String block) {
+    this.block = block;
+  }
 
 }
